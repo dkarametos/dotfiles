@@ -1,4 +1,3 @@
-" vim: nowrap fdm=marker
 set nocompatible
 let mapleader = ","
 
@@ -35,10 +34,10 @@ set hidden
 set nojoinspaces
 set nrformats=
 
-if has('mouse')
-" Don't want the mouse to work in insert mode.
-  set mouse=nv
-endif
+"if has('mouse')
+"" Don't want the mouse to work in insert mode.
+"  set mouse=nv
+"endif
 
 " Tab-completion in command-line mode
 set wildmode=full
@@ -52,7 +51,7 @@ set showcmd
 set laststatus=2
 set listchars=tab:▸\ ,eol:¬
 set number
-set cursorline
+" set cursorline
 
 " When the terminal has colors, enable syntax+search highlighting
 if &t_Co > 2 || has("gui_running")
@@ -61,10 +60,10 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 " Indentation {{{2
-" set tabstop=2
-" set softtabstop=2
-" set shiftwidth=2
-" set expandtab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
 
 " Enable persistent undo {{{2
 set undofile
@@ -200,10 +199,18 @@ let g:space_disable_select_mode=1
 let g:space_no_search = 1
 
 " Solarized {{{2
-let g:solarized_menu=0
-set background=light
-silent! colorscheme solarized
+" let g:solarized_menu=0
+" set background=light
+" silent! colorscheme solarized
+" let g:solarized_termtrans=1
+" set t_Co=16
+" set background=dark
+" let g:solarized_termcolors=16
+" let g:solarized_termtrans = 1
+" colorscheme solarized
+
 if exists('*togglebg#map')
   call togglebg#map("<F5>")
 endif
 
+hi LineNr ctermfg=darkgrey ctermbg=black
