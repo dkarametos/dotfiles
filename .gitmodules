@@ -52,3 +52,12 @@
 [submodule "vim/bundle/supertab"]
 	path = vim/bundle/supertab
 	url = git@github.com:ervandew/supertab.git
+[submodule "vim/bundle/syntastic"]
+	path = vim/bundle/syntastic
+	url = git@github.com:scrooloose/syntastic.git
+[submodule "vim/bundle/ctrlp"]
+	path = vim/bundle/ctrlp
+	url = git@github.com:kien/ctrlp.vim.git
+[submodule "vim/bundle/css-colors"]
+	path = vim/bundle/css-colors
+	url = git@github.com:ap/vim-css-color.git
