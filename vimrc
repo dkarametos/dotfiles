@@ -2,8 +2,8 @@ set nocompatible
 let mapleader = ","
 
 " Load plugins that ship with Vim {{{1
-runtime macros/matchit.vim
-runtime ftplugin/man.vim
+"runtime macros/matchit.vim
+"runtime ftplugin/man.vim
 
 " Load bundled plugins {{{1
 call pathogen#infect()
@@ -34,11 +34,6 @@ set hidden
 set nojoinspaces
 set nrformats=
 
-"if has('mouse')
-"" Don't want the mouse to work in insert mode.
-"  set mouse=nv
-"endif
-
 " Tab-completion in command-line mode
 set wildmode=full
 set wildmenu
@@ -54,10 +49,8 @@ set number
 " set cursorline
 
 " When the terminal has colors, enable syntax+search highlighting
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
+syntax on
+set hlsearch
 
 " Indentation {{{2
 set tabstop=2
@@ -79,11 +72,13 @@ set noswapfile
 
 " Mappings {{{1
 
-" Window switching {{{2
-nnoremap <C-k> <C-W>k
-nnoremap <C-j> <C-W>j
-nnoremap <C-h> <C-W>h
-nnoremap <C-l> <C-W>l
+" NerdTree toggle {{{2
+map <leader>n :NERDTreeToggle<CR>
+
+" NerdCommenter toggle {{{2
+map <leader>/ <plug>NERDCommenterToggle<CR>
+imap <leader>/ <plug>NERDCommenterToggle<CR>i
+
 
 " Strip trailing whitespace {{{2
 function! Preserve(command)
@@ -100,53 +95,7 @@ endfunction
 
 nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 
-" Escape and paste a register {{{2
-" <c-x>{char} - paste register into search field, escaping sensitive chars
-" http://stackoverflow.com/questions/7400743/
-cnoremap <c-x> <c-r>=<SID>PasteEscaped()<cr>
-function! s:PasteEscaped()
-  echo "\\".getcmdline()."\""
-  let char = getchar()
-  if char == "\<esc>"
-    return ''
-  else
-    let register_content = getreg(nr2char(char))
-    let escaped_register = escape(register_content, '\'.getcmdtype())
-    return substitute(escaped_register, '\n', '\\n', 'g')
-  endif
-endfunction
-
 " Custom commands {{{1"{{{
-" :Stab {{{2
-" Set tabstop, softtabstop and shiftwidth to the same value
-" From http://vimcasts.org/episodes/tabs-and-spaces/
-command! -nargs=* Stab call Stab()
-function! Stab()
-  let l:tabstop = 1 * input('set tabstop = softtabstop = shiftwidth = ')
-  if l:tabstop > 0
-    let &l:sts = l:tabstop
-    let &l:ts = l:tabstop
-    let &l:sw = l:tabstop
-  endif
-  call SummarizeTabs()
-endfunction
-
-function! SummarizeTabs()
-  try
-    echohl ModeMsg
-    echon 'tabstop='.&l:ts
-    echon ' shiftwidth='.&l:sw
-    echon ' softtabstop='.&l:sts
-    if &l:et
-      echon ' expandtab'
-    else
-      echon ' noexpandtab'
-    end
-  finally
-    echohl None
-  endtry
-endfunction
-
 " :CloseHiddenBuffers {{{2
 " Wipe all buffers which are not active (i.e. not visible in a window/tab)
 " Using elements from each of these:
@@ -172,45 +121,9 @@ function! CloseHiddenBuffers()
   echon "Deleted " . l:tally . " buffers"
 endfun
 
-" Fugitive.vim {{{2
-if has("autocmd")
-
-" Auto-close fugitive buffers
-  autocmd BufReadPost fugitive://* set bufhidden=delete
-
-" Navigate up one level from fugitive trees and blobs
-  autocmd User fugitive
-    \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-    \ nnoremap <buffer> .. :edit %:h<CR> |
-    \ endif
-
-endif
-
-" Add git branch to statusline.
-if exists("*fugitive#statusline")
-  set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-endif
-
 " Gundo.vim {{{2
 map <Leader>u :GundoToggle<CR>
 
-" Space.vim {{{2
-let g:space_disable_select_mode=1
-let g:space_no_search = 1
+hi LineNr  ctermfg=darkgrey ctermbg=black
+hi Comment ctermfg=darkgrey
 
-" Solarized {{{2
-" let g:solarized_menu=0
-" set background=light
-" silent! colorscheme solarized
-" let g:solarized_termtrans=1
-" set t_Co=16
-" set background=dark
-" let g:solarized_termcolors=16
-" let g:solarized_termtrans = 1
-" colorscheme solarized
-
-if exists('*togglebg#map')
-  call togglebg#map("<F5>")
-endif
-
-hi LineNr ctermfg=darkgrey ctermbg=black
